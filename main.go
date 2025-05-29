@@ -16,8 +16,8 @@ import (
 // @title           Book API
 // @version         1.0
 // @description     API for managing books
-// @host            localhost:8080
-// @BasePath        /
+// @schemes http https
+// @BasePath /
 
 func main() {
 	router := gin.Default()

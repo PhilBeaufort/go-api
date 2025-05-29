@@ -12,7 +12,6 @@ definitions:
       title:
         type: string
     type: object
-host: localhost:8080
 info:
   contact: {}
   description: API for managing books
@@ -172,4 +171,7 @@ paths:
       summary: Return a book
       tags:
       - books
+schemes:
+- http
+- https
 swagger: "2.0"
