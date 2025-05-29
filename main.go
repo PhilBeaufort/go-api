@@ -16,7 +16,6 @@ import (
 // @title           Book API
 // @version         1.0
 // @description     API for managing books
-// @schemes http https
 // @BasePath /
 
 func main() {

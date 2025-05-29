@@ -171,7 +171,4 @@ paths:
       summary: Return a book
       tags:
       - books
-schemes:
-- http
-- https
 swagger: "2.0"
