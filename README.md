@@ -19,6 +19,7 @@ go install github.com/swaggo/swag/cmd/swag@latest
 
 ## Dev Start
 
+1. Get dependancies : `go mod download`
 1. Start `go run main.go`
 1. Dev api will start at [http://localhost:8080](http://localhost:8080)
 
