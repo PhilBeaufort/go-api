@@ -111,6 +111,36 @@ paths:
       summary: Checkout a book
       tags:
       - books
+  /health:
+    get:
+      description: Returns 200 if server is healthy
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health Check
+      tags:
+      - Health
+  /ping:
+    get:
+      description: Responds with "pong"
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Ping
+      tags:
+      - Health
   /return:
     patch:
       description: Increase the quantity of the specified book by 1

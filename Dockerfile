@@ -23,7 +23,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o app .
 FROM alpine:latest
 
 # Install CA certificates
-#RUN apk --no-cache add ca-certificates
+RUN apk add --upgrade --no-cache ca-certificates && update-ca-certificates
 
 WORKDIR /root/
 

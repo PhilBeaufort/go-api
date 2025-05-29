@@ -3,7 +3,9 @@ package main
 import (
 	_ "go-api/docs"
 
+	"go-api/controllers"
 	"go-api/routes"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -25,11 +27,14 @@ func main() {
 		c.Redirect(http.StatusMovedPermanently, "/swagger/index.html")
 	})
 
+	router.GET("/ping", controllers.Ping)
+	router.GET("/health", controllers.Health)
 	routes.RegisterRoutes(router)
 
 	// Swagger route
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
+	log.Println("🚀 Server starting on port 8080...")
 	router.Run(":8080")
-	println("API started successfully on port 8080")
+
 }
