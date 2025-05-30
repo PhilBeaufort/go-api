@@ -33,10 +33,12 @@ go get github.com/lib/pq
 - Create/regenerate swagger `docs/` folder with the command `swag init`
 - Sagger doc available here [http://localhost:8080/swagger/index.html](http://localhost:8080/swagger/index.html)
 
-## Docker container
+## Docker Compose
 
-1. Build image : `docker build -t go-api .`
-1. Run image : `docker run --rm --name go-api -p 8080:8080 go-api`
+Build and start app : ` docker-compose up --build`
+
+> `.env` is only used locally
+
 
 ## SQLC
 
