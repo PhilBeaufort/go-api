@@ -40,7 +40,7 @@ go get github.com/lib/pq
 
 ## SQLC
 
-Librairy used to generate GO code for SQL databases with SQLschema and queries [sqlc.dev](https://sqlc.dev/)
+Librairy used to generate GO code for SQL databases with SQL code of the schema and queries [sqlc.dev](https://sqlc.dev/)
 
 - SQLC
 - Postgres (pgx/v5)
