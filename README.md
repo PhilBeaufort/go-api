@@ -15,11 +15,16 @@ go get github.com/gin-gonic/gin
 go get -u github.com/swaggo/gin-swagger
 go get -u github.com/swaggo/files
 go install github.com/swaggo/swag/cmd/swag@latest
+go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+go get github.com/jackc/pgx/v5
+go get github.com/jackc/pgx/v5/pgxpool
+go get github.com/lib/pq
 ```
 
 ## Dev Start
 
 1. Get dependancies : `go mod download`
+1. Remove unused imports : `go mod tidy`
 1. Start `go run main.go`
 1. Dev api will start at [http://localhost:8080](http://localhost:8080)
 
@@ -32,3 +37,24 @@ go install github.com/swaggo/swag/cmd/swag@latest
 
 1. Build image : `docker build -t go-api .`
 1. Run image : `docker run --rm --name go-api -p 8080:8080 go-api`
+
+## SQLC
+
+Librairy used to generate GO code for SQL databases with SQLschema and queries [sqlc.dev](https://sqlc.dev/)
+
+- SQLC
+- Postgres (pgx/v5)
+
+Generate code : `sqlc generate`
+
+### Install migration CLI and Go package
+
+Dependancies :
+
+```ps1
+go get -u github.com/golang-migrate/migrate/v4
+go get -u github.com/golang-migrate/migrate/v4/database/postgres
+go get -u github.com/golang-migrate/migrate/v4/source/file
+```
+
+Runs all migrations in `./migrations` folder.

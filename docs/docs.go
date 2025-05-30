@@ -31,7 +31,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/models.Book"
+                                "$ref": "#/definitions/db.Book"
                             }
                         }
                     }
@@ -56,7 +56,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Book"
+                            "$ref": "#/definitions/dto.CreateBookRequest"
                         }
                     }
                 ],
@@ -64,7 +64,7 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Book"
+                            "$ref": "#/definitions/db.Book"
                         }
                     }
                 }
@@ -93,7 +93,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Book"
+                            "$ref": "#/definitions/db.Book"
                         }
                     },
                     "404": {
@@ -131,7 +131,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Book"
+                            "$ref": "#/definitions/db.Book"
                         }
                     },
                     "400": {
@@ -224,7 +224,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/models.Book"
+                            "$ref": "#/definitions/db.Book"
                         }
                     },
                     "400": {
@@ -250,14 +250,32 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.Book": {
-            "description": "Book data structure",
+        "db.Book": {
             "type": "object",
             "properties": {
                 "author": {
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "quantity": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.CreateBookRequest": {
+            "type": "object",
+            "required": [
+                "author",
+                "quantity",
+                "title"
+            ],
+            "properties": {
+                "author": {
                     "type": "string"
                 },
                 "quantity": {

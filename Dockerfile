@@ -25,13 +25,16 @@ FROM alpine:latest
 # Install CA certificates
 RUN apk add --upgrade --no-cache ca-certificates && update-ca-certificates
 
-WORKDIR /root/
+WORKDIR /app
 
 # Copy binary from builder
 COPY --from=builder /app/app .
 
 # Copy Swagger docs
 COPY --from=builder /app/docs ./docs
+
+# Copy migration files
+COPY --from=builder /app/migrations ./migrations
 
 # Set environment variables
 ENV PORT=8080

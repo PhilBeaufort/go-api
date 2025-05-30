@@ -1,9 +1,10 @@
 package controllers
 
 import (
-	"go-api/models"
-	"go-api/services"
+	"go-api/db"
+	_ "go-api/dto"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,10 +14,16 @@ import (
 // @Description  Returns a list of all books in the catalog
 // @Tags         books
 // @Produce      json
-// @Success      200  {array}   models.Book
+// @Success      200  {array}   db.Book
 // @Router       /books [get]
 func GetBooks(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, services.GetBooks())
+	books, err := db.QueriesInstance.ListBooks(c.Request.Context())
+
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Error retrieving books."})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, books)
 }
 
 // GetbookById godoc
@@ -25,16 +32,24 @@ func GetBooks(c *gin.Context) {
 // @Tags         books
 // @Produce      json
 // @Param        id   path      string  true  "Book ID"
-// @Success      200  {object}  models.Book
+// @Success      200  {object}  db.Book
 // @Failure      404  {object}  map[string]string
 // @Router       /books/{id} [get]
 func GetBookByID(c *gin.Context) {
-	id := c.Param("id")
-	book, err := services.GetBookByID(id)
+	idParam := c.Param("id")
+
+	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found."})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Invalid book ID"})
 		return
 	}
+
+	book, err := db.QueriesInstance.GetBook(c.Request.Context(), int32(id))
+	if err != nil {
+		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "Book not found"})
+		return
+	}
+
 	c.IndentedJSON(http.StatusOK, book)
 }
 
@@ -44,16 +59,23 @@ func GetBookByID(c *gin.Context) {
 // @Tags         books
 // @Accept       json
 // @Produce      json
-// @Param        book  body      models.Book  true  "Book to add"
-// @Success      201   {object}  models.Book
+// @Param        book  body      dto.CreateBookRequest  true  "Book to add"
+// @Success      201   {object}  db.Book
 // @Router       /books [post]
 func CreateBook(c *gin.Context) {
-	var newBook models.Book
-	if err := c.BindJSON(&newBook); err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Invalid book data."})
+	var newBook db.CreateBookParams
+
+	if err := c.ShouldBindJSON(&newBook); err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Invalid book data"})
 		return
 	}
-	createdBook := services.AddBook(newBook)
+
+	createdBook, err := db.QueriesInstance.CreateBook(c.Request.Context(), newBook)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"message": "Could not create book"})
+		return
+	}
+
 	c.IndentedJSON(http.StatusCreated, createdBook)
 }
 
@@ -63,21 +85,29 @@ func CreateBook(c *gin.Context) {
 // @Tags         books
 // @Produce      json
 // @Param        id   query     string  true  "Book ID"
-// @Success      200  {object}  models.Book
+// @Success      200  {object}  db.Book
 // @Failure      400  {object}  map[string]string
 // @Failure      404  {object}  map[string]string
 // @Router       /checkout [patch]
 func CheckoutBook(c *gin.Context) {
-	id, ok := c.GetQuery("id")
+	idQuery, ok := c.GetQuery("id")
 	if !ok {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing id query parameter."})
 		return
 	}
-	book, err := services.CheckoutBook(id)
+
+	id, err := strconv.Atoi(idQuery)
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Invalid book ID"})
 		return
 	}
+
+	book, err := db.QueriesInstance.CheckoutBook(c.Request.Context(), int32(id))
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Unable to checkout book"})
+		return
+	}
+
 	c.IndentedJSON(http.StatusOK, book)
 }
 
@@ -87,20 +117,28 @@ func CheckoutBook(c *gin.Context) {
 // @Tags         books
 // @Produce      json
 // @Param        id   query     string  true  "Book ID"
-// @Success      200  {object}  models.Book
+// @Success      200  {object}  db.Book
 // @Failure      400  {object}  map[string]string
 // @Failure      404  {object}  map[string]string
 // @Router       /return [patch]
 func ReturnBook(c *gin.Context) {
-	id, ok := c.GetQuery("id")
+	idQuery, ok := c.GetQuery("id")
 	if !ok {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Missing id query parameter."})
 		return
 	}
-	book, err := services.ReturnBook(id)
+
+	id, err := strconv.Atoi(idQuery)
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Invalid book ID"})
 		return
 	}
+
+	book, err := db.QueriesInstance.ReturnBook(c.Request.Context(), int32(id))
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "Unable to return book"})
+		return
+	}
+
 	c.IndentedJSON(http.StatusOK, book)
 }

@@ -1,16 +1,28 @@
 basePath: /
 definitions:
-  models.Book:
-    description: Book data structure
+  db.Book:
     properties:
       author:
         type: string
       id:
+        type: integer
+      quantity:
+        type: integer
+      title:
+        type: string
+    type: object
+  dto.CreateBookRequest:
+    properties:
+      author:
         type: string
       quantity:
         type: integer
       title:
         type: string
+    required:
+    - author
+    - quantity
+    - title
     type: object
 info:
   contact: {}
@@ -28,7 +40,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.Book'
+              $ref: '#/definitions/db.Book'
             type: array
       summary: List all books
       tags:
@@ -43,14 +55,14 @@ paths:
         name: book
         required: true
         schema:
-          $ref: '#/definitions/models.Book'
+          $ref: '#/definitions/dto.CreateBookRequest'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/models.Book'
+            $ref: '#/definitions/db.Book'
       summary: Add a new book
       tags:
       - books
@@ -69,7 +81,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Book'
+            $ref: '#/definitions/db.Book'
         "404":
           description: Not Found
           schema:
@@ -94,7 +106,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Book'
+            $ref: '#/definitions/db.Book'
         "400":
           description: Bad Request
           schema:
@@ -155,7 +167,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.Book'
+            $ref: '#/definitions/db.Book'
         "400":
           description: Bad Request
           schema:

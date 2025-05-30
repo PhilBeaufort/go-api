@@ -1,14 +1,16 @@
 package main
 
 import (
-	_ "go-api/docs"
-
-	"go-api/controllers"
-	"go-api/routes"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"go-api/controllers"
+	"go-api/db"
+	_ "go-api/docs"
+	"go-api/routes"
+
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
@@ -19,6 +21,11 @@ import (
 // @BasePath /
 
 func main() {
+	db.RunMigrations() // Run database migrations (db/migration.go)
+
+	db.InitDatabase() // Initialize database connection (db/init.go)
+
+	// Initialize router
 	router := gin.Default()
 
 	// Redirect "/" to Swagger docs
