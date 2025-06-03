@@ -3,6 +3,8 @@
 This is a Tuto / Example for a GO API with Gin  
 Reference **[Go API Tutorial - Make An API With Go](https://youtu.be/bj77B59nkTQ?si=I45DJZcSS-l00Qn4)**
 
+Check my article for this go-api : [Golang API](https://docs.beaufort.dev/posts/golang-api/)
+
 ## Init Steps
 
 1. Install [Go](https://go.dev/dl/)
@@ -35,7 +37,7 @@ go get github.com/lib/pq
 
 ## Docker Compose
 
-Build and start app : ` docker-compose up --build`
+Build and start app : `docker-compose up --build`
 
 > `.env` is only used locally
 
